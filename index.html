@@ -1203,7 +1203,7 @@
 
         /* Hero Slider Styles */
         .hero-slider {
-            margin-top: 80px; /* Space for fixed header */
+            margin-top: 80px;
             position: relative;
             height: 600px;
             overflow: hidden;
@@ -1216,7 +1216,8 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            visibility: hidden;
+            transition: none;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1224,6 +1225,7 @@
 
         .slide.active {
             opacity: 1;
+            visibility: visible;
         }
 
         .slide-image {
@@ -1270,6 +1272,151 @@
 
         .slide-btn:hover {
             background: #45a049;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.85);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes flipIn {
+            from {
+                transform: rotateY(90deg);
+                opacity: 0;
+            }
+            to {
+                transform: rotateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Exit animations */
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes slideOutLeft {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes zoomOut {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(0.85);
+                opacity: 0;
+            }
+        }
+
+        @keyframes flipOut {
+            from {
+                transform: rotateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: rotateY(-90deg);
+                opacity: 0;
+            }
+        }
+
+        /* Animation classes */
+        .slide.fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .slide.slide-in-right {
+            animation: slideInRight 1s ease-out forwards;
+        }
+
+        .slide.slide-in-left {
+            animation: slideInLeft 1s ease-out forwards;
+        }
+
+        .slide.zoom-in {
+            animation: zoomIn 1s ease-out forwards;
+        }
+
+        .slide.flip-in {
+            animation: flipIn 1s ease-out forwards;
+            transform-origin: center center;
+            perspective: 1000px;
+        }
+
+        .slide.fade-out {
+            animation: fadeOut 1s ease-out forwards;
+        }
+
+        .slide.slide-out-left {
+            animation: slideOutLeft 1s ease-out forwards;
+        }
+
+        .slide.slide-out-right {
+            animation: slideOutRight 1s ease-out forwards;
+        }
+
+        .slide.zoom-out {
+            animation: zoomOut 1s ease-out forwards;
+        }
+
+        .slide.flip-out {
+            animation: flipOut 1s ease-out forwards;
+            transform-origin: center center;
+            perspective: 1000px;
         }
 
         .slider-nav {
@@ -1466,45 +1613,88 @@
             });
         });
 
-        // Hero Slider Script
-        const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.slider-dot');
-        const prevButton = document.querySelector('.slider-arrow.prev');
-        const nextButton = document.querySelector('.slider-arrow.next');
-        let currentSlide = 0;
+        // Hero Slider Script with Animations
+        const animations = [
+            {
+                in: 'fade-in',
+                out: 'fade-out'
+            },
+            {
+                in: 'slide-in-right',
+                out: 'slide-out-left'
+            },
+            {
+                in: 'zoom-in',
+                out: 'zoom-out'
+            },
+            {
+                in: 'flip-in',
+                out: 'flip-out'
+            }
+        ];
 
-        function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
+        let currentSlide = 0;
+        let currentAnimation = 0;
+
+        function showSlide(newIndex) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slider-dot');
             
-            slides[index].classList.add('active');
-            dots[index].classList.add('active');
+            // Remove all animation classes from the current slide
+            slides[currentSlide].className = 'slide';
+            
+            // Add the exit animation to the current slide
+            slides[currentSlide].classList.add(animations[currentAnimation].out);
+            
+            // Update the current slide index
+            currentSlide = newIndex;
+            
+           // Update dots
+           dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlide].classList.add('active');
+            
+            // After a brief delay, remove the previous slide's animation and add the entrance animation to the new slide
+            setTimeout(() => {
+                slides.forEach(slide => {
+                    slide.className = 'slide';
+                });
+                
+                slides[currentSlide].classList.add('active');
+                slides[currentSlide].classList.add(animations[currentAnimation].in);
+                
+                // Cycle through animations
+                currentAnimation = (currentAnimation + 1) % animations.length;
+            }, 50);
         }
 
         function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
+            const nextIndex = (currentSlide + 1) % document.querySelectorAll('.slide').length;
+            showSlide(nextIndex);
         }
 
         function prevSlide() {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(currentSlide);
+            const prevIndex = (currentSlide - 1 + document.querySelectorAll('.slide').length) % document.querySelectorAll('.slide').length;
+            showSlide(prevIndex);
         }
 
         // Event listeners for dots
-        dots.forEach((dot, index) => {
+        document.querySelectorAll('.slider-dot').forEach((dot, index) => {
             dot.addEventListener('click', () => {
-                currentSlide = index;
-                showSlide(currentSlide);
+                if (index !== currentSlide) {
+                    showSlide(index);
+                }
             });
         });
 
         // Event listeners for arrows
-        prevButton.addEventListener('click', prevSlide);
-        nextButton.addEventListener('click', nextSlide);
+        document.querySelector('.slider-arrow.prev').addEventListener('click', prevSlide);
+        document.querySelector('.slider-arrow.next').addEventListener('click', nextSlide);
 
         // Auto-advance slides every 5 seconds
         setInterval(nextSlide, 5000);
+
+        // Initialize first slide
+        document.querySelector('.slide').classList.add(animations[0].in);
     </script>
 
 
