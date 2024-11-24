@@ -7,6 +7,10 @@
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <title>Gomba Next Generation Model Farm</title>
     <meta name='robots' content='max-image-preview:large' />
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    
+    
     <script>
         window._wca = window._wca || [];
     </script>
@@ -1943,7 +1947,7 @@
     <div class="slide">
         <img src="images/Cow-pic-Matilda-Namutebi-850x1024.jpg" alt="Mushroom Growing" class="slide-image">
         <div class="slide-content">
-            <h2>Marginalised Communities</h2>
+            <h2>SDGs</h2>
         <p>
             Transforming lives through agricultural training for marginalised groups, including people with disabilities. Offering free heifers and chicks to uplift livelihoods and promote self-reliance.
         </p>
@@ -1971,7 +1975,165 @@
         </div>
     </div>
 </div>
+<style>
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: start;
+        }
 
+        .column {
+            flex: 1;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 100%;
+            max-height: 666px;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 470px;
+            height: 666px;
+            max-width: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .content-container {
+            padding: 1rem;
+        }
+
+        .sub-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .heading-icon img {
+            width: 40px;
+            height: auto;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin: 1rem 0;
+            color: #333;
+        }
+
+        .title-desc {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .section-container {
+                flex-direction: column; /* Changed from column-reverse to column */
+            }
+
+            .column {
+                width: 100%;
+            }
+
+            .image-container {
+                max-height: none;
+                height: auto;
+            }
+
+            .image-container img {
+                height: auto;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="section-container">
+        <!-- Content column -->
+        <div class="column">
+            <div class="content-container">
+                <div class="sub-title">
+                    <span class="heading-icon">
+                        <img 
+                            src="https://gomba-nextgenerationfarm.com/wp-content/uploads/2024/11/Logo1.png" 
+                            alt="Gomba Farm Logo"
+                            decoding="async"
+                        >
+                    </span>
+                    <span class="tagline">Who We Are</span>
+                </div>
+
+                <h2 class="title">Gomba Next Generation Model Farm</h2>
+                
+                <div class="title-desc">
+                    <p>
+                        As Uganda's Best Agricultural Farm 2020, we are transforming the nation's agricultural landscape through our 600-hectare sustainable agribusiness hub. Our innovative approach drives food security and secures a prosperous future for all.</p>
+                     </p>
+                    <p>
+                        At Gomba Next Generation Farm, we are committed to transforming Uganda's agricultural landscape through excellence and innovation. Our mission is to deliver premium, sustainable agro-products whilst empowering rural communities. We prioritise environmental stewardship, inclusive growth and community development, ensuring that each aspect of our operation contributes to a more resilient and prosperous agricultural future for Uganda.
+                     </p>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <div class="mission-vision-goal mt-4">
+    <div class="row">
+        <!-- Mission -->
+        <div class="col-md-4 text-center">
+            <i class="bi bi-flag-fill" style="font-size: 2rem; color: #007bff;"></i>
+            <h3 class="mt-2">Our Mission</h3>
+            <p>
+                To advance sustainable farming practices, improve livelihoods, and empower communities through innovation, training, and support.
+            </p>
+        </div>
+        <!-- Vision -->
+        <div class="col-md-4 text-center">
+            <i class="bi bi-lightbulb-fill" style="font-size: 2rem; color: #28a745;"></i>
+            <h3 class="mt-2">Our Vision</h3>
+            <p>
+                A future where farming is efficient, eco-friendly, and inclusive, contributing to food security and economic growth in Uganda and beyond.
+            </p>
+        </div>
+        <!-- Goal -->
+        <div class="col-md-4 text-center">
+            <i class="bi bi-bullseye" style="font-size: 2rem; color: #ffc107;"></i>
+            <h3 class="mt-2">Our Goal </h3>
+            <p>
+                To be a model of excellence in agriculture, fostering innovation and uplifting communities while protecting the environment for generations to come.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.src;
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            images.forEach(img => imageObserver.observe(img));
+        });
+    </script>
 <!-- Add these sections after the slider div -->
 <div class="detailed-sections">
     <!-- Livestock Section -->
@@ -2881,126 +3043,7 @@ scrollButton.addEventListener('click', () => {
                                                                     </div>
                                                                 </div>
                                                             </section>
-                                                            <section
-                                                                class="elementor-section elementor-top-section elementor-element elementor-element-8bc235d elementor-section-boxed elementor-section-height-default elementor-section-height-default shape-bg-top-no shape-bg-bottom-no"
-                                                                data-id="8bc235d" data-element_type="section">
-                                                                <div
-                                                                    class="elementor-container elementor-column-gap-default">
-                                                                    <div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-d2d246d"
-                                                                        data-id="d2d246d" data-element_type="column">
-                                                                        <div
-                                                                            class="elementor-widget-wrap elementor-element-populated">
-                                                                            <div class="elementor-element elementor-element-861ec64 elementor-widget elementor-widget-image"
-                                                                                data-id="861ec64"
-                                                                                data-element_type="widget"
-                                                                                data-widget_type="image.default">
-                                                                                <div class="elementor-widget-container">
-                                                                                    <img loading="lazy" loading="lazy"
-                                                                                        decoding="async" width="470"
-                                                                                        height="666"
-                                                                                        src="https://gomba-nextgenerationfarm.com/wp-content/uploads/2024/11/3.jpg"
-                                                                                        class="attachment-full size-full wp-image-1615"
-                                                                                        alt="" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-d1fcb11"
-                                                                        data-id="d1fcb11" data-element_type="column">
-                                                                        <div
-                                                                            class="elementor-widget-wrap elementor-element-populated">
-                                                                            <div class="elementor-element elementor-element-04f57ba elementor-widget elementor-widget-gva-heading-block"
-                                                                                data-id="04f57ba"
-                                                                                data-element_type="widget"
-                                                                                data-widget_type="gva-heading-block.default">
-                                                                                <div class="elementor-widget-container">
-                                                                                    <div
-                                                                                        class="gva-element-gva-heading-block gva-element">
-                                                                                        <div
-                                                                                            class="align-left style-1 widget gsc-heading box-align-left auto-responsive">
-                                                                                            <div class="content-inner">
-
-
-                                                                                                <div class="sub-title">
-                                                                                                    <span
-                                                                                                        class="heading-icon"><img
-                                                                                                            decoding="async"
-                                                                                                            src="https://gomba-nextgenerationfarm.com/wp-content/uploads/2024/11/Logo1.png"
-                                                                                                            alt="" /></span><span
-                                                                                                        class="tagline">Who
-                                                                                                        We Are</span>
-                                                                                                </div>
-
-                                                                                                <h2 class="title">
-                                                                                                    <span>Gomba Next
-                                                                                                        Generation Model
-                                                                                                        Farm</span>
-                                                                                                </h2>
-                                                                                                <div class="title-desc">
-                                                                                                    With a vision rooted
-                                                                                                    in transforming
-                                                                                                    Uganda’s
-                                                                                                    agricultural
-                                                                                                    landscape, we are a
-                                                                                                    leader in
-                                                                                                    sustainable
-                                                                                                    agribusiness and
-                                                                                                    community
-                                                                                                    empowerment.
-                                                                                                    Spanning 600 acres,
-                                                                                                    our farm is a hub of
-                                                                                                    innovation,
-                                                                                                    specializing in
-                                                                                                    climate-resilient
-                                                                                                    crop production,
-                                                                                                    organic farming,
-                                                                                                    livestock breeding,
-                                                                                                    horticulture, and
-                                                                                                    renewable energy.
-                                                                                                    Our work supports
-                                                                                                    the UN Sustainable
-                                                                                                    Development Goals by
-                                                                                                    driving food
-                                                                                                    security,
-                                                                                                    environmental
-                                                                                                    stewardship, and
-                                                                                                    inclusive economic
-                                                                                                    growth. We’re
-                                                                                                    committed
-                                                                                                    to empowering
-                                                                                                    marginalized
-                                                                                                    communities—including
-                                                                                                    youths, women,
-                                                                                                    refugees, people
-                                                                                                    with disabilities,
-                                                                                                    and rural
-                                                                                                    farmers—through
-                                                                                                    hands-on training,
-                                                                                                    assistive
-                                                                                                    technologies.
-                                                                                                    Awarded Uganda’s
-                                                                                                    Best Agricultural
-                                                                                                    Farm in 2020, we are
-                                                                                                    a catalyst for
-                                                                                                    change, forging a
-                                                                                                    sustainable path
-                                                                                                    that uplifts lives,
-                                                                                                    revitalizes
-                                                                                                    agriculture, and
-                                                                                                    secures a prosperous
-                                                                                                    future for all.
-                                                                                                </div>
-
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </section>
+                                                          
                                                             <section
                                                                 class="elementor-section elementor-top-section elementor-element elementor-element-33c219a elementor-section-boxed elementor-section-height-default elementor-section-height-default shape-bg-top-no shape-bg-bottom-no"
                                                                 data-id="33c219a" data-element_type="section"
@@ -11337,46 +11380,7 @@ section {
 
   <main id="main">
 
-<!-- ======= About Section ======= -->
-<section id="about" class="section-bg">
-  <div class="container-fluid" data-aos="fade-up">
-    <div class="section-header">
-      <h3 class="section-title">Who We Are</h3>
-      <span class="section-divider"></span>
-      <p class="section-description">
-        As Uganda's Best Agricultural Farm 2020, we are transforming the nation's agricultural landscape through our 600-hectare sustainable agribusiness hub. Our innovative approach drives food security and secures a prosperous future for all.</p>
-      </div>
 
-    <div class="row">
-      <div class="col-lg-6 about-img" data-aos="fade-right" dat-aos-delay="100">
-        <img src="https://gomba-nextgenerationfarm.com/wp-content/uploads/2024/11/3.jpg" alt="Gomba Next Generation Farm Facility">
-      </div>
-
-
-        <h2>Our Commitment</h2>
-        <p>
-          At Gomba Next Generation Farm, we are committed to transforming Uganda's agricultural landscape through excellence and innovation. Our mission is to deliver premium, sustainable agro-products whilst empowering rural communities. We prioritise environmental stewardship, inclusive growth and community development, ensuring that each aspect of our operation contributes to a more resilient and prosperous agricultural future for Uganda.
-      </p>
- 
-        <h2>Core Values</h2>
-        <p>
-          Our core values define our identity and guide our actions:
-        </p>
-        <ul>
-          <li><i class="bi bi-check-circle"></i><strong>Sustainability:</strong> We champion sustainable agricultural practices and eco-friendly processing methods.</li>
-          <li><i class="bi bi-check-circle"></i><strong>Innovation:</strong> We embrace innovation to enhance efficiency, quality, and product diversity.</li>
-          <li><i class="bi bi-check-circle"></i><strong>Quality:</strong> We uphold the highest standards in processing to deliver superior agro-products.</li>
-          <li><i class="bi bi-check-circle"></i><strong>Collaboration:</strong> We foster collaboration with farmers, stakeholders, and partners to build a robust agricultural ecosystem.</li>
-        </ul>
-
-        <p>
-          Gomba Next Generation Farm is more than a facility; it's a commitment to excellence and a driving force in the agricultural landscape. Join us in shaping the future of agro-processing!
-        </p>
-      </div>
-    </div>
-
-  </div>
-</section><!-- End About Section -->
 
 
    <!-- ======= Products & Services Section ======= -->
