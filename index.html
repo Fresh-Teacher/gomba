@@ -1207,6 +1207,8 @@
             position: relative;
             height: 600px;
             overflow: hidden;
+            perspective: 1200px;
+            transform-style: preserve-3d;
         }
 
         .slide {
@@ -1221,6 +1223,158 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+
+        /* New 3D Animations */
+        @keyframes cube-rotate-right {
+            from {
+                transform: rotateY(0) translateZ(0);
+                opacity: 1;
+            }
+            to {
+                transform: rotateY(-90deg) translateZ(500px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes cube-rotate-right-in {
+            from {
+                transform: rotateY(90deg) translateZ(500px);
+                opacity: 0;
+            }
+            to {
+                transform: rotateY(0) translateZ(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes flip-out-3d {
+            from {
+                transform: rotateX(0) translateZ(0);
+                opacity: 1;
+            }
+            to {
+                transform: rotateX(-180deg) translateZ(300px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes flip-in-3d {
+            from {
+                transform: rotateX(180deg) translateZ(300px);
+                opacity: 0;
+            }
+            to {
+                transform: rotateX(0) translateZ(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes carousel-right-out {
+            from {
+                transform: rotateY(0) translateZ(0) translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: rotateY(-45deg) translateZ(-300px) translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes carousel-right-in {
+            from {
+                transform: rotateY(45deg) translateZ(-300px) translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: rotateY(0) translateZ(0) translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes helix-out {
+            from {
+                transform: rotateY(0) translateZ(0) scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: rotateY(720deg) translateZ(-500px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes helix-in {
+            from {
+                transform: rotateY(-720deg) translateZ(-500px) scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: rotateY(0) translateZ(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes tilt-out {
+            from {
+                transform: rotateX(0) rotateY(0) translateZ(0);
+                opacity: 1;
+            }
+            to {
+                transform: rotateX(45deg) rotateY(-45deg) translateZ(300px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes tilt-in {
+            from {
+                transform: rotateX(-45deg) rotateY(45deg) translateZ(300px);
+                opacity: 0;
+            }
+            to {
+                transform: rotateX(0) rotateY(0) translateZ(0);
+                opacity: 1;
+            }
+        }  /* Animation Classes */
+        .slide.cube-right-out {
+            animation: cube-rotate-right 1s ease-in forwards;
+        }
+
+        .slide.cube-right-in {
+            animation: cube-rotate-right-in 1s ease-out forwards;
+        }
+
+        .slide.flip-3d-out {
+            animation: flip-out-3d 1.2s ease-in forwards;
+        }
+
+        .slide.flip-3d-in {
+            animation: flip-in-3d 1.2s ease-out forwards;
+        }
+
+        .slide.carousel-right-out {
+            animation: carousel-right-out 1s ease-in forwards;
+        }
+
+        .slide.carousel-right-in {
+            animation: carousel-right-in 1s ease-out forwards;
+        }
+
+        .slide.helix-out {
+            animation: helix-out 1.5s ease-in forwards;
+        }
+
+        .slide.helix-in {
+            animation: helix-in 1.5s ease-out forwards;
+        }
+
+        .slide.tilt-out {
+            animation: tilt-out 1.2s ease-in forwards;
+        }
+
+        .slide.tilt-in {
+            animation: tilt-in 1.2s ease-out forwards;
         }
 
         .slide.active {
@@ -1425,18 +1579,24 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 8px;
             z-index: 2;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 80%;
+            padding: 0 20px;
         }
 
         .slider-dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.5);
             cursor: pointer;
             transition: background 0.3s ease;
+            margin-bottom: 5px;
         }
+
 
         .slider-dot.active {
             background: white;
@@ -1557,7 +1717,7 @@
 
         <!-- Slide 2 -->
         <div class="slide">
-            <img src="BananaPlantationinAfrica.jpg" alt="Training Programs" class="slide-image">
+            <img src="BananaPlantation.jpg" alt="Training Programs" class="slide-image">
             <div class="slide-content">
                 <h2>Agricultural Training Institute</h2>
                 <p>Empowering the next generation of farmers with modern techniques and sustainable practices through comprehensive training programs.</p>
@@ -1567,10 +1727,80 @@
 
         <!-- Slide 3 -->
         <div class="slide">
-            <img src="Bee-keeping.jpg" alt="Community Impact" class="slide-image">
+            <img src="Cocoa.webp" alt="Cocoa Farming" class="slide-image">
+            <div class="slide-content">
+                <h2>Sustainable Cocoa Production</h2>
+                <p>Learn advanced techniques in cocoa farming and processing to maximize yield while maintaining quality standards.</p>
+                <a href="#" class="slide-btn">Explore Cocoa Programs</a>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide">
+            <img src="Bee-keeping.jpg" alt="Beekeeping" class="slide-image">
+            <div class="slide-content">
+                <h2>Modern Beekeeping</h2>
+                <p>Discover the art and science of beekeeping while contributing to ecosystem health and producing quality honey products.</p>
+                <a href="#" class="slide-btn">Learn Beekeeping</a>
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide">
+            <img src="depositphotos_525396846-stock-photo-closeup-lactarius-aurantiacus-brown-mushroom.jpg" alt="Hydroponics" class="slide-image">
+            <div class="slide-content">
+                <h2>Hydroponic Systems</h2>
+                <p>Experience the future of farming with soil-less growing techniques that maximize space and water efficiency.</p>
+                <a href="#" class="slide-btn">Discover Hydroponics</a>
+            </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide">
+            <img src="Fish-Farms-Development-in-Uganda.jpg" alt="Smart Farming" class="slide-image">
+            <div class="slide-content">
+                <h2>Smart Farming Technology</h2>
+                <p>Implement cutting-edge technology and IoT solutions to optimize farm operations and increase productivity.</p>
+                <a href="#" class="slide-btn">Explore Tech</a>
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide">
+            <img src="indoor-greenhouse-shutter.jpg" alt="Livestock Management" class="slide-image">
+            <div class="slide-content">
+                <h2>Livestock Management</h2>
+                <p>Learn modern approaches to livestock care, breeding, and sustainable animal husbandry practices.</p>
+                <a href="#" class="slide-btn">Learn More</a>
+            </div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide">
+            <img src="layer-hen-space.jpg" alt="Organic Farming" class="slide-image">
+            <div class="slide-content">
+                <h2>Organic Farming Practices</h2>
+                <p>Master the principles of organic farming and learn to produce chemical-free, healthy crops.</p>
+                <a href="#" class="slide-btn">Go Organic</a>
+            </div>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="slide">
+            <img src="Livestock farming.webp" alt="Aquaculture" class="slide-image">
+            <div class="slide-content">
+                <h2>Sustainable Aquaculture</h2>
+                <p>Dive into modern fish farming techniques and sustainable aquaculture practices for protein production.</p>
+                <a href="#" class="slide-btn">Explore Aquaculture</a>
+            </div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="slide">
+            <img src="mushroom.jpg" alt="Community Impact" class="slide-image">
             <div class="slide-content">
                 <h2>Community Impact</h2>
-                <p>Creating lasting change in rural communities through sustainable farming practices and economic empowerment.</p>
+                <p>See how our programs transform communities through knowledge sharing and sustainable agricultural practices.</p>
                 <a href="#" class="slide-btn">See Our Impact</a>
             </div>
         </div>
@@ -1578,6 +1808,13 @@
         <!-- Navigation Dots -->
         <div class="slider-nav">
             <div class="slider-dot active"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
             <div class="slider-dot"></div>
             <div class="slider-dot"></div>
         </div>
@@ -1614,10 +1851,27 @@
         });
 
         // Hero Slider Script with Animations
+        // Updated animation configurations
         const animations = [
             {
-                in: 'fade-in',
-                out: 'fade-out'
+                in: 'cube-right-in',
+                out: 'cube-right-out'
+            },
+            {
+                in: 'flip-3d-in',
+                out: 'flip-3d-out'
+            },
+            {
+                in: 'carousel-right-in',
+                out: 'carousel-right-out'
+            },
+            {
+                in: 'helix-in',
+                out: 'helix-out'
+            },
+            {
+                in: 'tilt-in',
+                out: 'tilt-out'
             },
             {
                 in: 'slide-in-right',
@@ -1635,25 +1889,23 @@
 
         let currentSlide = 0;
         let currentAnimation = 0;
+        let isAnimating = false;
 
         function showSlide(newIndex) {
+            if (isAnimating) return;
+            isAnimating = true;
+
             const slides = document.querySelectorAll('.slide');
             const dots = document.querySelectorAll('.slider-dot');
             
-            // Remove all animation classes from the current slide
             slides[currentSlide].className = 'slide';
-            
-            // Add the exit animation to the current slide
             slides[currentSlide].classList.add(animations[currentAnimation].out);
             
-            // Update the current slide index
             currentSlide = newIndex;
             
-           // Update dots
-           dots.forEach(dot => dot.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
             dots[currentSlide].classList.add('active');
             
-            // After a brief delay, remove the previous slide's animation and add the entrance animation to the new slide
             setTimeout(() => {
                 slides.forEach(slide => {
                     slide.className = 'slide';
@@ -1662,8 +1914,12 @@
                 slides[currentSlide].classList.add('active');
                 slides[currentSlide].classList.add(animations[currentAnimation].in);
                 
-                // Cycle through animations
                 currentAnimation = (currentAnimation + 1) % animations.length;
+                
+                // Reset animation flag after transition
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 1500);
             }, 50);
         }
 
@@ -1677,24 +1933,30 @@
             showSlide(prevIndex);
         }
 
-        // Event listeners for dots
+        // Event listeners
         document.querySelectorAll('.slider-dot').forEach((dot, index) => {
             dot.addEventListener('click', () => {
-                if (index !== currentSlide) {
+                if (index !== currentSlide && !isAnimating) {
                     showSlide(index);
                 }
             });
         });
 
-        // Event listeners for arrows
-        document.querySelector('.slider-arrow.prev').addEventListener('click', prevSlide);
-        document.querySelector('.slider-arrow.next').addEventListener('click', nextSlide);
+        document.querySelector('.slider-arrow.prev').addEventListener('click', () => {
+            if (!isAnimating) prevSlide();
+        });
+        document.querySelector('.slider-arrow.next').addEventListener('click', () => {
+            if (!isAnimating) nextSlide();
+        });
 
-        // Auto-advance slides every 5 seconds
-        setInterval(nextSlide, 5000);
+        // Auto-advance slides
+        setInterval(() => {
+            if (!isAnimating) nextSlide();
+        }, 5000);
 
         // Initialize first slide
         document.querySelector('.slide').classList.add(animations[0].in);
+
     </script>
 
 
