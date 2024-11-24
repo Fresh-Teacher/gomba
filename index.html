@@ -1678,6 +1678,167 @@
                 font-size: 1rem;
             }
         }
+        /* Detailed Sections Styling */
+.detailed-sections {
+    padding: 2rem 0;
+}
+
+.content-section {
+    padding: 4rem 0;
+    scroll-margin-top: 80px; /* Accounts for fixed header */
+}
+
+.content-section:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+.section-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.section-wrapper h2 {
+    text-align: center;
+    color: #333;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.section-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.section-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.section-text h3 {
+    color: #2c5282;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.section-text p {
+    color: #4a5568;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.feature {
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+}
+
+.feature h4 {
+    color: #2d3748;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    color: #718096;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .section-wrapper h2 {
+        font-size: 2rem;
+    }
+    
+    .section-text h3 {
+        font-size: 1.5rem;
+    }
+    
+    .features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .section-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .content-section {
+        padding: 3rem 0;
+    }
+    
+    .section-wrapper {
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .features {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-wrapper h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.scroll-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background: #2c5282;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+        font-size: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .scroll-to-top.visible {
+        opacity: 1;
+    }
+    
+    .scroll-to-top:hover {
+        background: #2d3748;
+    }
+`;
+document.head.appendChild(style);
     </style>
 </head>
 <body>
@@ -1806,6 +1967,309 @@
     </div>
 </div>
 
+<!-- Add these sections after the slider div -->
+<div class="detailed-sections">
+    <!-- Livestock Section -->
+    <section id="livestock" class="content-section">
+        <div class="section-wrapper">
+            <h2>Livestock Farming Excellence</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/bg-11-600x540.jpg" alt="Livestock Farming">
+                </div>
+                <div class="section-text">
+                    <h3>Modern Livestock Management</h3>
+                    <p>Our comprehensive livestock program focuses on sustainable and profitable farming practices for cattle, goats, and pigs. We implement modern animal husbandry techniques that ensure optimal health and productivity.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Cattle Management</h4>
+                            <p>Learn dairy and beef cattle management, including breeding, nutrition, and health maintenance.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Goat Farming</h4>
+                            <p>Master efficient goat farming techniques for both meat and dairy production.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Pig Husbandry</h4>
+                            <p>Discover modern pig farming methods for optimal growth and production.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Poultry Section -->
+    <section id="poultry" class="content-section">
+        <div class="section-wrapper">
+            <h2>Advanced Poultry Farming</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/22-600x540.jpg" alt="Poultry Farming">
+                </div>
+                <div class="section-text">
+                    <h3>Modern Poultry Production</h3>
+                    <p>Our poultry program covers all aspects of modern poultry farming, from layer management to broiler production. Learn cutting-edge techniques for maximum efficiency and profitability.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Layer Management</h4>
+                            <p>Expert techniques for optimal egg production and layer health management.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Broiler Production</h4>
+                            <p>Efficient methods for raising healthy broilers with optimal feed conversion.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Disease Prevention</h4>
+                            <p>Comprehensive approach to biosecurity and poultry health maintenance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agro Processing Section -->
+    <section id="agro-processing" class="content-section">
+        <div class="section-wrapper">
+            <h2>Innovative Agro Processing</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/post-5-2-600x540.jpg" alt="Agro Processing">
+                </div>
+                <div class="section-text">
+                    <h3>Value Addition Through Processing</h3>
+                    <p>Learn how to transform raw agricultural products into high-value processed goods. Our program covers modern processing techniques, packaging, and quality control measures.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Food Processing</h4>
+                            <p>Modern techniques for preserving and processing agricultural products.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Quality Control</h4>
+                            <p>Implementation of strict quality control measures throughout processing.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Market Integration</h4>
+                            <p>Strategies for connecting processed products with market demands.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coffee Section -->
+    <section id="coffee" class="content-section">
+        <div class="section-wrapper">
+            <h2>Professional Coffee Growing</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/37-600x540.jpg" alt="Coffee Growing">
+                </div>
+                <div class="section-text">
+                    <h3>Excellence in Coffee Production</h3>
+                    <p>Master the art and science of coffee cultivation, from seedling care to harvest and processing. Learn techniques for producing high-quality coffee beans for the global market.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Cultivation Techniques</h4>
+                            <p>Best practices for coffee plant management and care.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Processing Methods</h4>
+                            <p>Various processing techniques to enhance coffee quality.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Quality Grading</h4>
+                            <p>Understanding coffee grading and quality standards.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banana Section -->
+    <section id="banana" class="content-section">
+        <div class="section-wrapper">
+            <h2>Banana Plantation Management</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/j-ok-600x540.jpg" alt="Banana Plantation">
+                </div>
+                <div class="section-text">
+                    <h3>Profitable Banana Farming</h3>
+                    <p>Learn comprehensive banana plantation management techniques for optimal yield and quality. Our program covers all aspects from planting to harvest and market preparation.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Plantation Setup</h4>
+                            <p>Proper establishment and management of banana plantations.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Disease Management</h4>
+                            <p>Effective control of common banana diseases and pests.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Post-Harvest Handling</h4>
+                            <p>Best practices for harvesting and preparing bananas for market.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aquaculture Section -->
+    <section id="aquaculture" class="content-section">
+        <div class="section-wrapper">
+            <h2>Sustainable Aquaculture</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/fish-pond.webp" alt="Aquaculture">
+                </div>
+                <div class="section-text">
+                    <h3>Modern Fish Farming</h3>
+                    <p>Discover sustainable aquaculture practices for various fish species. Learn about pond management, feeding strategies, and disease control for optimal fish production.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Pond Management</h4>
+                            <p>Effective techniques for maintaining healthy fish ponds.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Species Selection</h4>
+                            <p>Choosing and managing different fish species for farming.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Water Quality</h4>
+                            <p>Maintaining optimal water conditions for fish health.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Horticulture Section -->
+    <section id="horticulture" class="content-section">
+        <div class="section-wrapper">
+            <h2>Professional Horticulture</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/9-1-600x540.jpg" alt="Horticulture">
+                </div>
+                <div class="section-text">
+                    <h3>Advanced Horticultural Practices</h3>
+                    <p>Learn modern techniques for growing fruits, vegetables, and flowers. Our program covers greenhouse management, irrigation systems, and pest control strategies.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Crop Management</h4>
+                            <p>Best practices for various horticultural crops.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Protected Cultivation</h4>
+                            <p>Greenhouse and tunnels management techniques.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Marketing Strategies</h4>
+                            <p>Connecting produce with profitable market channels.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mushroom Section -->
+    <section id="mushroom" class="content-section">
+        <div class="section-wrapper">
+            <h2>Mushroom Cultivation</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/webp-net-resizeimage-2-1-1.jpg" alt="Mushroom Growing">
+                </div>
+                <div class="section-text">
+                    <h3>Professional Mushroom Growing</h3>
+                    <p>Master the art of mushroom cultivation with our comprehensive program. Learn about different varieties, growing mediums, and environmental control for optimal production.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Substrate Preparation</h4>
+                            <p>Proper techniques for preparing growing medium.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Species Selection</h4>
+                            <p>Growing different mushroom varieties commercially.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Environmental Control</h4>
+                            <p>Managing conditions for optimal mushroom growth.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Beekeeping Section -->
+    <section id="beekeeping" class="content-section">
+        <div class="section-wrapper">
+            <h2>Modern Beekeeping</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/97-600x540.jpg" alt="Bee Keeping">
+                </div>
+                <div class="section-text">
+                    <h3>Professional Apiculture</h3>
+                    <p>Learn modern beekeeping techniques for honey production and pollination services. Our program covers hive management, disease control, and honey processing.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Hive Management</h4>
+                            <p>Proper care and maintenance of bee colonies.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Honey Production</h4>
+                            <p>Techniques for quality honey harvesting and processing.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Colony Health</h4>
+                            <p>Disease prevention and treatment in bee colonies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Training Institute Section -->
+    <section id="training" class="content-section">
+        <div class="section-wrapper">
+            <h2>Agricultural Training Institute</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="images/113-600x540.jpg" alt="Training Institute">
+                </div>
+                <div class="section-text">
+                    <h3>Comprehensive Agricultural Education</h3>
+                    <p>Join our state-of-the-art training institute for hands-on learning in modern agricultural practices. Our programs combine theoretical knowledge with practical experience.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <h4>Practical Training</h4>
+                            <p>Hands-on experience in various agricultural sectors.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Expert Guidance</h4>
+                            <p>Learn from experienced agricultural professionals.</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Modern Facilities</h4>
+                            <p>Access to state-of-the-art farming equipment and facilities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
 
         <!-- Navigation Dots -->
         <div class="slider-nav">
@@ -1827,7 +2291,123 @@
             <button class="slider-arrow next"></button>
         </div>
     </div>
+<script>
+    document.querySelectorAll('.slide-btn').forEach((btn, index) => {
+    // Set the correct href for each button
+    const sections = [
+        'livestock',
+        'poultry',
+        'agro-processing',
+        'coffee',
+        'banana',
+        'aquaculture',
+        'horticulture',
+        'mushroom',
+        'beekeeping',
+        'training'
+    ];
+    
+    btn.href = `#${sections[index]}`;
+    
+    // Add smooth scrolling behavior
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = btn.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        
+        if (targetSection) {
+            // Close mobile menu if open
+            const navLinks = document.querySelector('.nav-links');
+            const hamburger = document.querySelector('.hamburger');
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+            
+            // Smooth scroll to section
+            targetSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
 
+// Intersection Observer for fade-in animations
+const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.15
+};
+
+const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Add visible class to all children with fade-in class
+            entry.target.querySelectorAll('.fade-in').forEach(element => {
+                element.classList.add('visible');
+            });
+            // Once animation is done, stop observing
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+// Add fade-in class to elements and observe sections
+document.querySelectorAll('.content-section').forEach(section => {
+    // Add fade-in class to key elements
+    section.querySelector('.section-image').classList.add('fade-in');
+    section.querySelector('.section-text').classList.add('fade-in');
+    section.querySelectorAll('.feature').forEach(feature => {
+        feature.classList.add('fade-in');
+    });
+    
+    // Observe the section
+    observer.observe(section);
+});
+
+// Update active section in navigation based on scroll position
+const sections = document.querySelectorAll('.content-section');
+
+window.addEventListener('scroll', () => {
+    let current = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (scrollY >= (sectionTop - sectionHeight / 3)) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+            link.classList.add('active');
+        }
+    });
+});
+// Optional: Add scroll-to-top button
+const scrollButton = document.createElement('button');
+scrollButton.className = 'scroll-to-top';
+scrollButton.innerHTML = '↑';
+document.body.appendChild(scrollButton);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) {
+        scrollButton.classList.add('visible');
+    } else {
+        scrollButton.classList.remove('visible');
+    }
+});
+
+scrollButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+    </script>
     <script>
         // Navigation Menu Script
         const hamburger = document.querySelector('.hamburger');
