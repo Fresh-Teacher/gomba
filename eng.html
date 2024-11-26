@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Kids Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 30px;
+      width: 400px;
+      text-align: center;
+    }
+    .option {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .option:hover {
+      background-color: #f8f8f8;
+    }
+    .correct {
+      background-color: #d4edda;
+      border-color: #28a745;
+    }
+    .incorrect {
+      background-color: #f8d7da;
+      border-color: #dc3545;
+    }
+    #next-btn {
+      display: none;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div id="quiz-content"></div>
+    <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "You must not ______ lies to elders.",
+        options: ["tell", "speak", "say"],
+        correct: "tell"
+      },
+      {
+        question: "The dog wagged its ______.",
+        options: ["tail", "leg", "ear"],
+        correct: "tail"
+      },
+      {
+        question: "The ______ has not repaired my shoes.",
+        options: ["cobbler", "tailor", "baker"],
+        correct: "cobbler"
+      },
+      {
+        question: "Kato is ______ than Kakuru.",
+        options: ["younger", "taller", "smarter"],
+        correct: "younger"
+      },
+      {
+        question: "Most girls are afraid of ______.",
+        options: ["snakes", "spiders", "mice"],
+        correct: "snakes"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function playSound(isCorrect) {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.type = 'sine';
+      gainNode.connect(audioContext.destination);
+      oscillator.connect(gainNode);
+
+      if (isCorrect) {
+        // Higher pitched, cheerful sound for correct answer
+        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5 note
+        gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+      } else {
+        // Lower pitched, somber sound for incorrect answer
+        oscillator.frequency.setValueAtTime(261.63, audioContext.currentTime); // C4 note
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      }
+
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.3);
+    }
+
+    function displayQuestion() {
+      const quizContent = document.getElementById('quiz-content');
+      const nextBtn = document.getElementById('next-btn');
+      
+      if (currentQuestion < questions.length) {
+        const q = questions[currentQuestion];
+        quizContent.innerHTML = `
+          <h2>Question ${currentQuestion + 1}</h2>
+          <p>${q.question}</p>
+          ${q.options.map(opt => 
+            `<div class="option" onclick="checkAnswer('${opt}')">${opt}</div>`
+          ).join('')}
+        `;
+        nextBtn.style.display = 'none';
+      } else {
+        quizContent.innerHTML = `
+          <h2>Quiz Completed!</h2>
+          <p>Your score: ${score} out of ${questions.length}</p>
+          ${score === questions.length ? 
+            '<p>🌟 Perfect Score! Amazing job! 🌟</p>' : 
+            '<p>Great effort! Keep learning!</p>'}
+        `;
+        nextBtn.style.display = 'none';
+      }
+    }
+
+    function checkAnswer(selected) {
+      const options = document.querySelectorAll('.option');
+      const correctAnswer = questions[currentQuestion].correct;
+      
+      options.forEach(option => {
+        option.onclick = null;
+        if (option.textContent === correctAnswer) {
+          option.classList.add('correct');
+        }
+        if (option.textContent === selected && selected !== correctAnswer) {
+          option.classList.add('incorrect');
+        }
+      });
+
+      if (selected === correctAnswer) {
+        score++;
+        playSound(true);
+      } else {
+        playSound(false);
+      }
+
+      const nextBtn = document.getElementById('next-btn');
+      nextBtn.style.display = 'block';
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      displayQuestion();
+    }
+
+    // Start the quiz
+    displayQuestion();
+  </script>
+</body>
+</html>
