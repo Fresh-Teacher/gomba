@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic 3D Animated Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+
+        .gallery-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+        }
+
+        .stacked-photos {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+        }
+
+        .photo {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: transform 0.5s, z-index 0.5s;
+            background-color: #e0e0e0; /* Placeholder background */
+        }
+
+        .view-gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        /* New pulsing animation for the gallery button */
+        @keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 15px rgba(0, 134, 36, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+        .view-gallery-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            animation: pulse 2s infinite;
+            border-radius: 5px;
+        }
+
+        .view-gallery-btn:hover {
+            background-color: #f0f0f0;
+            animation-play-state: paused;
+        }
+
+        /* Rest of the existing CSS remains the same */
+        .gallery-expanded {
+            
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gallery-expanded.active {
+            display: flex;
+        }
+
+        .expanded-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .expanded-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    background-color: #e0e0e0;
+    transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+        .close-btn, .nav-btn {
+            position: absolute;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 110;
+            transition: background 0.3s;
+        }
+
+        .close-btn {
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .nav-btn {
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 100px;
+        }
+
+        .prev-btn {
+            left: 20px;
+        }
+
+        .next-btn {
+            right: 20px;
+        }
+
+        .slide-left-exit {
+            animation: slideLeftExit 0.4s forwards;
+        }
+
+        .slide-right-exit {
+            animation: slideRightExit 0.4s forwards;
+        }
+
+        .slide-left-enter {
+            animation: slideLeftEnter 0.4s forwards;
+        }
+
+        .slide-right-enter {
+            animation: slideRightEnter 0.4s forwards;
+        }
+
+        @keyframes slideLeftExit {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(-100%); opacity: 0; }
+        }
+
+        @keyframes slideRightExit {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+
+        @keyframes slideLeftEnter {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideRightEnter {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery-container">
+        <div class="stacked-photos" id="stackedPhotos">
+            <div class="view-gallery-overlay">
+                <button class="view-gallery-btn">GALLERY 🖼️</button>
+            </div>
+            <!-- Photos will be dynamically added here -->
+        </div>
+
+        <div class="gallery-expanded" id="galleryExpanded">
+            <button class="close-btn">&times;</button>
+            <button class="nav-btn prev-btn">&lt;</button>
+            <div class="expanded-content">
+                <img class="expanded-image" id="expandedImage" src="" alt="Expanded Image">
+            </div>
+            <button class="nav-btn next-btn">&gt;</button>
+        </div>
+    </div>
+
+    <script>
+        const imagePaths = [
+            'images/1-1-470x540.jpg',
+            'images/1-2-600x540.jpg',
+            'images/1-470x540.jpg',
+            'images/2-1-470x540.jpg',
+            'images/2-2-600x540.jpg',
+            'images/2-470x540.jpg',
+            'images/3-1-470x540.jpg',
+            'images/3-2-600x540.jpg',
+            'images/3-470x540.jpg',
+            'images/4-470x540.jpg',
+            'images/5-1-600x540.jpg',
+            'images/5-175x175.jpg',
+            'images/6-175x175.jpg',
+            'images/7-175x175.jpg',
+            'images/7-600x540.jpg',
+            'images/8-175x175.jpg',
+            'images/9-1-600x540.jpg',
+            'images/9-175x175.jpg',
+            'images/10-1-600x540.jpg',
+            'images/10-600x540.jpg',
+            'images/11-600x540.jpg',
+            'images/12-600x540.jpg',
+            'images/13-600x540.jpg',
+            'images/14-600x540.jpg',
+            'images/15-600x540.jpg',
+            'images/16-600x540.jpg',
+            'images/17-600x540.jpg',
+            'images/18-600x540.jpg',
+            'images/19-600x540.jpg',
+            'images/20-600x540.jpg',
+            'images/21-600x540.jpg',
+            'images/22-600x540.jpg',
+            'images/23-600x540.jpg',
+            'images/25-600x540.jpg',
+            'images/26-600x540.jpg',
+            'images/27-600x540.jpg',
+            'images/28-600x540.jpg',
+            'images/29-600x540.jpg',
+            'images/30-600x540.jpg',
+            'images/32-600x540.jpg',
+            'images/33-600x540.jpg',
+            'images/34-600x540.jpg',
+            'images/34-600x5402.jpg',
+            'images/35-600x540.jpg',
+            'images/36-600x540.jpg',
+            'images/37-600x540.jpg',
+            'images/38-600x540.jpg',
+            'images/39-600x540.jpg',
+            'images/39-600x5402.jpg',
+            'images/40-600x540.jpg',
+            'images/41-600x540.jpg',
+            'images/42-600x540.jpg',
+            'images/43-1-600x540.jpg',
+            'images/43-525x540.jpg',
+            'images/45-600x540.jpg',
+            'images/46-600x540.jpg',
+            'images/47-600x540.jpg',
+            'images/48-600x540.jpg',
+            'images/50-600x540.jpg',
+            'images/51-600x540.jpg',
+            'images/52-600x540.jpg',
+            'images/53-600x540.jpg',
+            'images/54-600x540.jpg',
+            'images/55-600x540.jpg',
+            'images/56-600x540.jpg',
+            'images/57-600x540.jpg',
+            'images/58-600x540.jpg',
+            'images/59-600x540.jpg',
+            'images/60-600x540.jpg',
+            'images/62-600x540.jpg',
+            'images/63-600x540.jpg',
+            'images/64-600x540.jpg',
+            'images/65-600x540.jpg',
+            'images/66-600x540.jpg',
+            'images/67-600x540.jpg',
+            'images/68-600x540.jpg',
+            'images/69-600x540.jpg',
+            'images/70-600x540.jpg',
+            'images/71-600x540.jpg',
+            'images/72-600x540.jpg',
+            'images/74-600x540.jpg',
+            'images/75-600x540.jpg',
+            'images/76-600x540.jpg',
+            'images/77-600x540.jpg',
+            'images/78-600x540.jpg',
+            'images/79-600x540.jpg',
+            'images/80-600x540.jpg',
+            'images/81-175x175.jpg',
+            'images/82-175x175.jpg',
+            'images/83-600x540.jpg',
+            'images/84-600x540.jpg',
+            'images/85-600x540.jpg',
+            'images/86-600x540.jpg',
+            'images/87-600x540.jpg',
+            'images/88-600x540.jpg',
+            'images/89-600x540.jpg',
+            'images/90-600x540.jpg',
+            'images/91-600x540.jpg',
+            'images/92-600x540.jpg',
+            'images/93-600x540.jpg',
+            'images/94-600x540.jpg',
+            'images/95-600x540.jpg',
+            'images/96-600x540.jpg',
+            'images/97-600x540.jpg',
+            'images/98-600x540.jpg',
+            'images/99-600x540.jpg',
+            'images/100-600x540.jpg',
+            'images/101-600x540.jpg',
+            'images/102-600x540.jpg',
+            'images/103-600x540.jpg',
+            'images/104-600x540.jpg',
+            'images/105-600x540.jpg',
+            'images/106-600x540.jpg',
+            'images/107-600x540.jpg',
+            'images/108-600x540.jpg',
+            'images/109-600x540.jpg',
+            'images/110-600x540.jpg',
+            'images/111-600x540.jpg',
+            'images/112-600x540.jpg',
+            'images/113-600x540.jpg',
+            'images/114-600x540.jpg',
+            'images/115-175x175.jpg',
+            'images/116-175x175.jpg',
+            'images/117-175x175.jpg',
+            'images/118-175x175.jpg',
+            'images/118-600x540.png',
+            'images/119-175x175.jpg',
+            'images/120-175x175.jpg',
+            'images/121-175x175.jpg',
+            'images/122-175x175.jpg',
+            'images/123-175x175.jpg',
+            'images/124-175x175.jpg',
+            'images/125-600x540.jpg',
+            'images/126-600x540.jpg',
+            'images/127-600x540.jpg',
+            'images/128-600x540.jpg',
+            'images/129-600x540.jpg',
+            'images/130-600x540.jpg',
+            'images/131-600x540.jpg',
+            'images/132-600x540.jpg',
+            'images/133-600x540.jpg',
+            'images/135.jpg',
+            'images/136-175x175.jpg',
+            'images/1906510.jpg',
+            'images/1727760941554-470x540.jpg',
+            'images/ada-600x535.jpg',
+            'images/avatar-2-2.jpg',
+            'images/avatar-2-175x175.jpg',
+            'images/avatar-2.jpg',
+            'images/awards-1-2-175x100.jpg',
+            'images/awards-2-2-175x100.jpg',
+            'images/awards-3-2-175x100.jpg',
+            'images/awards-4-2-175x100.jpg',
+            'images/bees.jpg',
+            'images/bg-1-2-600x540.jpg',
+            'images/bg-1-600x540.jpg',
+            'images/bg-2-2-600x540.jpg',
+            'images/BG-2-600x540.jpg',
+            'images/bg-3-2-600x540.jpg',
+            'images/bg-3-600x540.jpg',
+            'images/bg-4-2-600x540.jpg',
+            'images/bg-4-600x540.jpg',
+            'images/bg-5-2-600x300.jpg',
+            'images/bg-5-600x540.jpg',
+            'images/bg-6-2-600x300.jpg',
+            'images/bg-6-600x540.jpg',
+            'images/bg-7-600x540.jpg',
+            'images/bg-8-600x540.jpg',
+            'images/bg-9-2-600x535.jpg',
+            'images/bg-9-600x540.jpg',
+            'images/bg-10-2-600x540.jpg',
+            'images/bg-11-2-600x540.jpg',
+            'images/bg-11-600x540.jpg',
+            'images/bg-12-2-600x535.jpg',
+            'images/bg-12-600x540.jpg',
+            'images/bg-13-2-600x540.jpg',
+            'images/bg-13-600x540.jpg',
+            'images/bg-map-2-600x540.png',
+            'images/brand-w1-2.png',
+            'images/brand-w2-2.png',
+            'images/brand-w3-2.png',
+            'images/brand-w4-2.png',
+            'images/brand-w5-2.png',
+            'images/brand-w6-2.png',
+            'images/breadcrumb-2-600x534.jpg',
+            'images/cattle.jpg',
+            'images/chicken.jpg',
+            'images/coffee.jpg',
+            'images/Cow-pic-Matilda-Namutebi-850x1024.jpg',
+            'images/cows.jpg',
+            'images/cropped-Logo1-175x175.png',
+            'images/cropped-wb-logo-1-175x175.png',
+            'images/cropped-wb-logo-175x175.png',
+            'images/dafad-600x540.jpg',
+            'images/dtedgv-175x175.jpg',
+            'images/event-1-2-600x540.jpg',
+            'images/event-2-2-600x540.jpg',
+            'images/event-3-2-600x540.jpg',
+            'images/event-4-2-600x540.jpg',
+            'images/event-5-2-600x540.jpg',
+            'images/event-6-2-600x540.jpg',
+            'images/fgwsrdc-175x175.jpg',
+            'images/fish-pond.jpg',
+            'images/fish-pond.webpimages/fsdw-600x535.jpg',
+            'images/fx-600x535.jpg',
+            'images/g1-600x540.jpg',
+            'images/gfgr-175x175.jpg',
+            'images/ghf-175x175.jpg',
+            'images/GNMF_1-175x175.jpg',
+            'images/GNMF_2-175x175.jpg',
+            'images/GNMF_3-175x175.jpg',
+            'images/GNMF_4-175x175.jpg',
+            'images/GNMF_5-175x175.jpg',
+            'images/GNMF_6-175x175.jpg',
+            'images/GNMF_7-175x175.jpg',
+            'images/GNMF_8-175x175.jpg',
+            'images/GNMF_9-175x175.jpg',
+            'images/GNMF_10-175x175.jpg',
+            'images/GNMF_11-175x175.jpg',
+            'images/GNMF_12-175x175.jpg',
+            'images/icon-avocado-2.png',
+            'images/icon-carrot-2.png',
+            'images/icon-chicken-leg-2.png',
+            'images/icon-corn-2.png',
+            'images/icon-cow-2.png',
+            'images/icon-dragon-fruit-2-2.png',
+            'images/icon-dragon-fruit-3.png',
+            'images/icon-fish-2.png',
+            'images/icon-no-meat-2.png',
+            'images/icon-onion-2.png',
+            'images/icon-raspberries-2.png',
+            'images/icon-salad-2.png',
+            'images/icon-service-1-2.png',
+            'images/icon-service-2-2.png',
+            'images/icon-service-3-2.png',
+            'images/icon-service-4-2.png',
+            'images/icon-service-5-2.png',
+            'images/icon-service-7-2.png',
+            'images/icon-service-8-2.png',
+            'images/icon-sevice-6-2.png',
+            'images/icon-steak-2.png',
+            'images/image-2-2-175x175.jpg',
+            'images/image-3-2-600x540.jpg',
+            'images/image-4-2-175x175.jpg',
+            'images/image-5-2-175x175.jpg',
+            'images/image-6-2-175x175.jpg',
+            'images/image-7-2-175x175.jpg',
+            'images/image-8-2-600x540.jpg',
+            'images/image-9-2-600x540.jpg',
+            'images/image-10-2-600x540.jpg',
+            'images/image-11-2-600x540.jpg',
+            'images/image-12-2-175x175.jpg',
+            'images/image-13-2-175x175.jpg',
+            'images/image-14-2-175x175.jpg',
+            'images/image-16-2-470x540.jpg',
+            'images/image-17-2-175x175.jpg',
+            'images/image-18-2-175x175.jpg',
+            'images/image-19-2-600x540.jpg',
+            'images/image-20-2-525x540.jpg',
+            'images/image.svgimages/j-ok-600x540.jpg',
+            'images/jihv-600x540.jpg',
+            'images/jknpk-600x540.jpg',
+            'images/job-2-2.jpg',
+            'images/layer-1-2-600x540.png',
+            'images/layer-1-600x540.png',
+            'images/List-of-Courses-pdf-600x540.jpg',
+            'images/logo-2-175x80.png',
+            'images/logo-3-2.png',
+            'images/logo-white-2-175x80.png',
+            'images/Logo1-600x540.png',
+            'images/Logo1-copy-175x175.png',
+            'images/matooke.jpg',
+            'images/mozambique-community-chicken-farmers-3382-1.jpg',
+            'images/mushrooms.jpg',
+            'images/ojb-600x540.jpg',
+            'images/partner-1-2-175x101.jpg',
+            'images/partner-2-2-175x101.jpg',
+            'images/partner-3-2-175x101.jpg',
+            'images/partner-4-2-175x101.jpg',
+            'images/philip-1-600x540.jpg',
+            'images/post-1-2-600x540.jpg',
+            'images/post-2-2-600x540.jpg',
+            'images/post-3-2-600x540.jpg',
+            'images/post-4-2-600x540.jpg',
+            'images/post-5-2-600x540.jpg',
+            'images/post-6-2-600x540.jpg',
+            'images/product-1-2-600x540.jpg',
+            'images/product-2-2-600x540.jpg',
+            'images/product-3-2-600x540.jpg',
+            'images/product-4-2-600x540.jpg',
+            'images/product-5-2-600x540.jpg',
+            'images/product-6-2-600x540.jpg',
+            'images/product-7-2-600x540.jpg',
+            'images/product-8-2-600x540.jpg',
+            'images/product-9-2-600x540.jpg',
+            'images/project-1-2-600x540.jpg',
+            'images/project-2-2-600x540.jpg',
+            'images/project-3-2-600x540.jpg',
+            'images/project-4-2-600x540.jpg',
+            'images/project-5-2-600x540.jpg',
+            'images/project-6-2-600x540.jpg',
+            'images/project-7-2-600x540.jpg',
+            'images/project-8-2-600x540.jpg',
+            'images/sfvs3-175x175.jpg',
+            'images/slider-1-2-600x540.jpg',
+            'images/slider-1-600x540.jpg',
+            'images/slider-2-2-600x540.jpg',
+            'images/slider-2-600x540.jpg',
+            'images/slider-3-2-600x540.jpg',
+            'images/slider-4-2-600x540.jpg',
+            'images/slider-4-600x540.jpg',
+            'images/slider-5-2-600x540.jpg',
+            'images/slider-5-600x540.jpg',
+            'images/slider-6-2-600x540.jpg',
+            'images/slider-6-600x540.jpg',
+            'images/slider-7-2-600x540.jpg',
+            'images/slider-7-600x540.jpg',
+            'images/slider-8-2-600x540.jpg',
+            'images/slider-8-600x540.jpg',
+            'images/STATEH2-1024x623.jpg',
+            'images/swe-175x175.jpg',
+            'images/team-2-500x540.jpg',
+            'images/testimonial-1-2-175x175.jpg',
+            'images/testimonial-2-2-175x175.jpg',
+            'images/testimonial-3-2-175x175.jpg',
+            'images/testimonial-4-2-175x175.jpg',
+            'images/Uganda-Best-Farmers-Awards-Gomba-Next-Generation-Model-Farm-600x540.jpg',
+            'images/Untitled-3-600x540.jpg',
+            'images/Untitled-3j-1-600x540.jpg',
+            'images/Untitled-3j-600x540.jpg',
+            'images/Untitled-4lko-600x540.jpg',
+            'images/uy6fv-600x540.jpeg',
+            'images/wb-logo-1-600x540.png',
+            'images/wb-logo-600x540.png',
+            'images/webp-net-resizeimage-2-1-1.jpg',
+            'images/WhatsApp-Image-2024-11-04-at-12.28.29-PM-563x540.jpeg',
+            'images/WhatsApp-Image-2024-11-04-at-12.28.29-PMgfd-563x540.jpeg',
+            'images/woocommerce-placeholder-600x540.png',
+            'images/xdteuhb-600x540.jpg',
+            'images/fish-pond.jpg',
+            'images/GNMF_1-175x175.jpg',
+            
+            'images/dafad-600x540.jpg',
+            
+            'images/cropped-Logo1-175x175.png',
+            
+            'images/cows.jpg',
+            
+            'Azam Home Baking Flour.jpg',
+            
+            'beans.png',
+            
+            'blue rice.png',
+            
+            'cow peas.png',
+            
+            'groben rice.png',
+            
+        ];
+
+        const stackedPhotosContainer = document.getElementById('stackedPhotos');
+        const viewGalleryBtn = document.querySelector('.view-gallery-btn');
+        const galleryExpanded = document.getElementById('galleryExpanded');
+        const expandedImage = document.getElementById('expandedImage');
+        const closeBtn = document.querySelector('.close-btn');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+
+        let currentImageIndex = 0;
+        let isAnimating = false;
+        let preloadedImage = null;
+
+        // Create stacked photo layout with randomized selection and 3D effect
+        function createStackedPhotos() {
+            // Randomly select 3 unique images
+            const availableIndices = [...Array(imagePaths.length).keys()];
+            const selectedIndices = [];
+
+            // Select 3 unique random indices
+            for (let i = 0; i < 3 && availableIndices.length > 0; i++) {
+                const randomIndex = Math.floor(Math.random() * availableIndices.length);
+                selectedIndices.push(availableIndices.splice(randomIndex, 1)[0]);
+            }
+
+            selectedIndices.forEach((pathIndex, index) => {
+                const img = document.createElement('img');
+                img.classList.add('photo');
+                
+                // More sophisticated 3D stacking
+                const rotationAngle = (index - 1) * 8;
+                const horizontalOffset = (index - 1) * 25;
+                const verticalOffset = index * 15;
+                const zOffset = (3 - index) * 10;
+                
+                img.style.transform = `
+                    rotate(${rotationAngle}deg) 
+                    translateX(${horizontalOffset}px) 
+                    translateY(${verticalOffset}px) 
+                    translateZ(-${zOffset}px)
+                `;
+                img.style.zIndex = 3 - index;
+
+                // Lazy load the image
+                img.src = imagePaths[pathIndex];
+                
+                stackedPhotosContainer.appendChild(img);
+            });
+        }
+
+        // Preload next image
+        function preloadNextImage() {
+            if (preloadedImage) {
+                preloadedImage.remove();
+            }
+
+            preloadedImage = new Image();
+            const nextIndex = (currentImageIndex + 1) % imagePaths.length;
+            preloadedImage.src = imagePaths[nextIndex];
+        }
+
+        // Open expanded gallery
+        function openGallery() {
+            currentImageIndex = 0;
+            updateExpandedImage('initial');
+            galleryExpanded.classList.add('active');
+            preloadNextImage();
+        }
+
+        // Close expanded gallery
+        function closeGallery() {
+            galleryExpanded.classList.remove('active');
+        }
+
+        // Navigate to previous image
+        function prevImage() {
+            if (isAnimating) return;
+            
+            isAnimating = true;
+            expandedImage.classList.add('slide-right-exit');
+            
+            setTimeout(() => {
+                currentImageIndex = (currentImageIndex - 1 + imagePaths.length) % imagePaths.length;
+                updateExpandedImage('prev');
+            }, 400);
+        }
+
+        // Navigate to next image
+        function nextImage() {
+            if (isAnimating) return;
+            
+            isAnimating = true;
+            expandedImage.classList.add('slide-left-exit');
+            
+            setTimeout(() => {
+                currentImageIndex = (currentImageIndex + 1) % imagePaths.length;
+                updateExpandedImage('next');
+            }, 400);
+        }
+
+        // Update expanded image with 3D transition
+        function updateExpandedImage(direction) {
+            expandedImage.classList.remove('slide-left-exit', 'slide-right-exit');
+            
+            if (direction === 'next') {
+                expandedImage.classList.add('slide-left-enter');
+            } else if (direction === 'prev') {
+                expandedImage.classList.add('slide-right-enter');
+            }
+            
+            setTimeout(() => {
+                expandedImage.src = imagePaths[currentImageIndex];
+                
+                setTimeout(() => {
+                    expandedImage.classList.remove('slide-left-enter', 'slide-right-enter');
+                    isAnimating = false;
+                    preloadNextImage();
+                }, 50);
+            }, 400);
+        }
+
+        // Touch swipe support with 3D effect
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        expandedImage.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        expandedImage.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const swipeDiff = touchEndX - touchStartX;
+
+            if (swipeDiff > swipeThreshold) {
+                prevImage();
+            } else if (swipeDiff < -swipeThreshold) {
+                nextImage();
+            }
+        }
+
+        // Event Listeners
+        viewGalleryBtn.addEventListener('click', openGallery);
+        closeBtn.addEventListener('click', closeGallery);
+        prevBtn.addEventListener('click', prevImage);
+        nextBtn.addEventListener('click', nextImage);
+        galleryExpanded.addEventListener('click', (e) => {
+            if (e.target === galleryExpanded) closeGallery();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (galleryExpanded.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'Escape') closeGallery();
+            }
+        });
+
+        // Initialize
+        createStackedPhotos();
+    </script>
+</body>
+</html>
