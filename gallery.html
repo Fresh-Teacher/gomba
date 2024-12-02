@@ -5,17 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic 3D Animated Gallery</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            perspective: 1000px;
-            overflow: hidden;
-        }
+   
 
         .gallery-container {
             position: relative;
@@ -193,8 +183,8 @@
             100% { transform: translateX(0); opacity: 1; }
         }
     </style>
-</head>
-<body>
+
+<center>
     <div class="gallery-container">
         <div class="stacked-photos" id="stackedPhotos">
             <div class="view-gallery-overlay">
@@ -211,7 +201,7 @@
             </div>
             <button class="nav-btn next-btn">&gt;</button>
         </div>
-    </div>
+    </div></center>
 
     <script>
         const imagePaths = [
